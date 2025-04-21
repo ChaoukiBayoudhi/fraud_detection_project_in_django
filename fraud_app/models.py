@@ -7,9 +7,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     full_name = models.CharField(max_length=255)
     date_of_birth = models.DateField()
-    phone_number = models.CharField(max_length=20, validators=[
-        RegexValidator(r'^\+?[0-9]{9,15}$', 'Enter a valid phone number.')
-    ])
+    phone_number = models.CharField(max_length=25, 
+                validators=[RegexValidator(r'^\+?[0-9]{9,25}$', 
+                'Enter a valid phone number.')]
+                )
+
     address = models.TextField()
 
     class Meta:
@@ -27,9 +29,11 @@ class BankAccount(models.Model):
     ]
 
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='bank_accounts')
-    account_number = models.CharField(max_length=20, unique=True, validators=[
-        RegexValidator(r'^\d{10,20}$', 'Enter a valid account number.')
-    ])
+    account_number = models.CharField(max_length=30, unique=True, 
+                            validators=[RegexValidator(r'^\d{10,30}$', 
+                            'Enter a valid account number.')]
+                            )
+
     balance = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     currency_type = models.CharField(max_length=10)
     account_status = models.CharField(max_length=10, choices=ACCOUNT_STATUS_CHOICES, default='active')

@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-**r!k_!rvwibh!wy5=%^+r#v%%u1y1*6c*-m0!(j+qg17!awt%"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False  # Changed to True for development
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # Add your allowed hosts here
 
 
 # Application definition
@@ -39,7 +39,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'fraud_app',
     'rest_framework',
+    'rest_framework_simplejwt',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Only authenticated users can access the API
+    ],
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -77,8 +88,12 @@ WSGI_APPLICATION = "fraud_detection_project.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "fraud_detection_db",
+        'USER':'user01',
+        'PASSWORD':'user01',
+        'HOST':'localhost',
+        'PORT':5432
     }
 }
 
